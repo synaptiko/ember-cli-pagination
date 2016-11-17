@@ -3,6 +3,7 @@ import Util from 'ember-cli-pagination/util';
 import LockToRange from 'ember-cli-pagination/watch/lock-to-range';
 import { QueryParamsForBackend, ChangeMeta } from './mapping';
 import PageMixin from '../page-mixin';
+const { computed } = Ember
 
 var ArrayProxyPromiseMixin = Ember.Mixin.create(Ember.PromiseProxyMixin, {
   then: function(success,failure) {
@@ -57,8 +58,8 @@ export default Ember.ArrayProxy.extend(PageMixin, Ember.Evented, ArrayProxyPromi
   },
 
   paramsForBackend: Ember.computed('page','perPage','paramMapping','paramsForBackendCounter', function() {
-    var paramsObj = QueryParamsForBackend.create({page: this.getPage(), 
-                                                  perPage: this.getPerPage(), 
+    var paramsObj = QueryParamsForBackend.create({page: this.getPage(),
+                                                  perPage: this.getPerPage(),
                                                   paramMapping: this.get('paramMapping')});
     var ops = paramsObj.make();
 
@@ -92,16 +93,16 @@ export default Ember.ArrayProxy.extend(PageMixin, Ember.Evented, ArrayProxyPromi
 
       me.set("loading",false);
       return me.set("meta", metaObj.make());
-      
+
     }, function(error) {
       Util.log("PagedRemoteArray#fetchContent error " + error);
       me.set("loading",false);
     });
 
     return res;
-  },  
+  },
 
-  totalPagesBinding: "meta.total_pages",
+  totalPages: computed.alias("meta.total_pages"),
 
   pageChanged: Ember.observer("page", "perPage", function() {
     this.set("promise", this.fetchContent());
