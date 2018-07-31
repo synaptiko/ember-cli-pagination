@@ -10,7 +10,7 @@ var ArrayProxyPromiseMixin = Ember.Mixin.create(Ember.PromiseProxyMixin, {
     var promise = this.get('promise');
     var me = this;
 
-    promise.then(function() {
+    return promise.then(function() {
       success(me);
     }, failure);
   }
