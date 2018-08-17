@@ -44,9 +44,7 @@ export default Ember.ArrayProxy.extend(Ember.Evented, {
     var promise;
 
     if (content.then) {
-      promise = content.then(function() {
-        success(me);
-      },failure);
+      promise = content.then(success.bind(null,me),failure);
     }
     else {
       promise = new Ember.RSVP.Promise(function(resolve) {

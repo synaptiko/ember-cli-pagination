@@ -8,11 +8,7 @@ const { computed } = Ember
 var ArrayProxyPromiseMixin = Ember.Mixin.create(Ember.PromiseProxyMixin, {
   then: function(success,failure) {
     var promise = this.get('promise');
-    var me = this;
-
-    return promise.then(function() {
-      success(me);
-    }, failure);
+    return promise.then(success.bind(null, this), failure);
   }
 });
 
